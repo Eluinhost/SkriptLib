@@ -1,0 +1,11 @@
+name: SkriptLib
+version: 0.1
+description: EXSolo's SkriptLib Plugin
+author: EXSolo
+main: com.exsoloscript.skriptlib.SkriptLib
+database: false
+commands:
+  get:
+  search:
+    aliases: lookup
+  fetch:
