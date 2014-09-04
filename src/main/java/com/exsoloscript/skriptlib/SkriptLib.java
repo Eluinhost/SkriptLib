@@ -1,5 +1,18 @@
 package com.exsoloscript.skriptlib;
 
+import com.exsoloscript.skriptlib.cmd.FetchCommand;
+import com.exsoloscript.skriptlib.cmd.GetCommand;
+import com.exsoloscript.skriptlib.cmd.SearchCommand;
+import com.exsoloscript.skriptlib.data.FileData;
+import com.exsoloscript.skriptlib.timer.FetchFileTreeTimer;
+import com.google.common.io.ByteStreams;
+import com.google.common.io.Files;
+import com.google.common.io.Resources;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -9,19 +22,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import net.minecraft.util.org.apache.commons.io.FileUtils;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import com.exsoloscript.skriptlib.cmd.FetchCommand;
-import com.exsoloscript.skriptlib.cmd.GetCommand;
-import com.exsoloscript.skriptlib.cmd.SearchCommand;
-import com.exsoloscript.skriptlib.data.FileData;
-import com.exsoloscript.skriptlib.timer.FetchFileTreeTimer;
 
 public class SkriptLib extends JavaPlugin {
 
@@ -71,7 +71,7 @@ public class SkriptLib extends JavaPlugin {
 		}
 		
 		try {
-			FileUtils.copyURLToFile(url, new File(dir, name), 4000, 4000);
+            ByteStreams.copy(Resources.newInputStreamSupplier(url), Files.newOutputStreamSupplier(new File(dir, name)));
 		} catch (IOException e) {
 			messageOps("Something went wrong whilst copying the file from the SkriptLib server to your Skript direcotry");
 			return;
