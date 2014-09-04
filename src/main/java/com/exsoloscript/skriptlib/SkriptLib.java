@@ -3,10 +3,11 @@ package com.exsoloscript.skriptlib;
 import com.exsoloscript.skriptlib.cmd.FetchCommand;
 import com.exsoloscript.skriptlib.cmd.GetCommand;
 import com.exsoloscript.skriptlib.cmd.SearchCommand;
-import com.exsoloscript.skriptlib.data.FileData;
+import com.exsoloscript.skriptlib.data.*;
 import com.exsoloscript.skriptlib.timer.FetchFileTreeTimer;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
+import com.google.common.io.LineProcessor;
 import com.google.common.io.Resources;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -22,6 +23,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 public class SkriptLib extends JavaPlugin {
 
@@ -32,6 +34,20 @@ public class SkriptLib extends JavaPlugin {
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new FetchFileTreeTimer(this), 0, 6000);
 		
 		registerCommands();
+
+        File skriptDir = new File("plugins/Skript/scripts");
+        File pluginDir = new File("plugins");
+
+        URLFormatter formatter = null;
+        try {
+            formatter = new DefaultURLFormatter("http://skriptlib.exsoloscript.com/files/");
+        } catch(MalformedURLException ignored) {}
+
+        DirectoryLocator locator = new DefaultDirectoryLocator(skriptDir, pluginDir);
+        LineProcessor<List<FileData>> processor = new FileDataLineProcessor(getLogger());
+        FileManager manager = new DefaultFileManager(processor, formatter, locator);
+
+        //TODO things
 	}
 
 	public void onDisable() {
